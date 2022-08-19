@@ -1,7 +1,0 @@
-{
-  "version": 3,
-  "sources": ["../remixicon.ts"],
-  "sourcesContent": ["import { Octokit } from \"@octokit/rest\";\n\nconst octokit = new Octokit();\n\n// Fetches a list of all Remixicons\nexport default function fetchRemixicons() {\n  return new Promise((resolve) => {\n  octokit.rest.git.getTree({\n    owner: \"Remix-Design\",\n    repo: \"RemixIcon\",\n    tree_sha: \"master\",\n    recursive: true,\n  }).then((result) => resolve(\n      result.data.tree\n        .map((item) => item.path)\n        .filter((path) =>\n          path &&\n          path.match(/^icons\\/\\w+\\/[a-z-]+-line[.]svg$/))\n        .map((path) => path\n          .replace(/-line[.]svg$/, \"\")\n          .replace(/^icons\\/\\w+\\//, \"\")))\n     );\n  })\n}\n"],
-  "mappings": ";;;;;;;;;;;;;;;;;;;;;;;AAAA;AAAA;AAAA;AAAA,kBAAwB;AAExB,MAAM,UAAU,IAAI;AAGL,2BAA2B;AACxC,SAAO,IAAI,QAAQ,CAAC,YAAY;AAChC,YAAQ,KAAK,IAAI,QAAQ;AAAA,MACvB,OAAO;AAAA,MACP,MAAM;AAAA,MACN,UAAU;AAAA,MACV,WAAW;AAAA,OACV,KAAK,CAAC,WAAW,QAChB,OAAO,KAAK,KACT,IAAI,CAAC,SAAS,KAAK,MACnB,OAAO,CAAC,SACP,QACA,KAAK,MAAM,qCACZ,IAAI,CAAC,SAAS,KACZ,QAAQ,gBAAgB,IACxB,QAAQ,iBAAiB;AAAA;AAAA;",
-  "names": []
-}
