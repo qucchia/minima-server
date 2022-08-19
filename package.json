@@ -1,0 +1,20 @@
+{
+  "name": "fondthriftycallbacks",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@octokit/rest": "^19.0.4",
+    "@replit/database": "^2.0.2",
+    "ws": "^8.8.1"
+  },
+  "devDependencies": {
+    "@types/ws": "^8.5.3"
+  }
+}

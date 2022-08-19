@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["../types.ts"],
+  "sourcesContent": ["export type Author = {\n  username: string;\n  id: number;\n}\n\nexport type User = Author & { status: UserStatus };\n\nexport type Message = {\n  content?: string;\n  image?: string;\n  author: Author;\n  id: number;\n}\n\nexport enum UserStatus {\n  ONLINE,\n  OFFLINE,\n  IDLE,\n  DO_NOT_DISTURB,\n}\n\nexport type ClientMessage = {\n  type: \"message\",\n  message: Message,\n} | {\n  type: \"fetch\",\n  before?: number,\n  after?: number,\n} | {\n  type: \"delete\",\n  deleteType: \"message\",\n  id: number,\n} | {\n  type: \"user\",\n  user: User,\n};\n\nexport type ServerMessage = {\n  type: \"messages\",\n  messages: Message[],\n  start: boolean,\n} | {\n  type: \"users\",\n  users: User[]\n};\n"],
+  "mappings": ";;;;;;;AAAA;AAAA;AAAA;AAcO,IAAK;AAAL,UAAK,aAAL;AACL;AACA;AACA;AACA;AAAA,GAJU;",
+  "names": []
+}
