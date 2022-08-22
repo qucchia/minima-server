@@ -4,6 +4,7 @@ import readline from "readline";
 import {
   ClientMessage,
   ServerMessage,
+  Message,
   User,
   UserStatus
 } from "./types";
@@ -22,7 +23,7 @@ type UserConnection = {
 }
 
 let onlineUsers: UserConnection[] = [];
-let messages: any[] = [];
+let messages: Message[] = [];
 const MAX_MESSAGES = 1000;
 const MESSAGES_PER_PAGE = 10;
 
@@ -45,11 +46,19 @@ function sendMessages(to: number, ws: WebSocket) {
   }, ws);
 }
 
+function findLastIndex<T>(array: Array<T>, predicate: (value: T, index: number, obj: T[]) => boolean): number {
+    let l = array.length;
+    while (l--) {
+      if (predicate(array[l], l, array)) return l;
+    }
+    return -1;
+}
+
 function prompt() {
   rl.question("> ", function (command) {
     switch (command) {
       case "clear":
-        db.set("messages", "[]");
+        db.set("messages", []);
         messages = [];
         console.log("Cleared messages");
         break;
@@ -67,7 +76,7 @@ function prompt() {
 }
 
 async function init() {
-  messages = await db.get("messages") || [];
+  messages = await db.get("messages") as Message[] || [];
   const remixicons = await fetchRemixicons();
 
   wss.on("connection", (ws: WebSocket) => {
@@ -93,24 +102,26 @@ async function init() {
           }, ws);
           break;
         case "fetch":
-          if ("after" in wsMessage) {
-            const i = messages.findIndex(
-              (m) => m.timestamp >= wsMessage.after
-            );
-            sendMessages(i + MESSAGES_PER_PAGE, ws);
-          } else {
-            const i = messages.findIndexLast(
-              (m) => m.timestamp <= wsMessage.before
+          if ("last" in wsMessage) {
+            sendMessages(messages.length, ws);
+          } else if ("before" in wsMessage) {
+            const i = findLastIndex(
+              messages,
+              (m) => m.id <= wsMessage.before
             );
             sendMessages(i, ws);
+          } else {
+            const i = messages.findIndex(
+              (m) => m.id >= wsMessage.after
+            );
+            sendMessages(i + MESSAGES_PER_PAGE, ws);
           }
           break;
         case "delete":
           switch (wsMessage.deleteType) {
             case "message":
               messages = messages.filter(
-                (message) =>
-                  message.timestamp !== message.delete.message
+                (message) => message.id !== wsMessage.id
               );
               break;
           }

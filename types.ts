@@ -24,8 +24,17 @@ export type ClientMessage = {
   message: Message,
 } | {
   type: "fetch",
-  before?: number,
-  after?: number,
+  after: number,
+} | {
+  type: "fetch",
+  before: number,
+} | {
+  type: "fetch",
+  last: true,
+} | {
+  type: "fetch",
+  after: number,
+  before: number,
 } | {
   type: "delete",
   deleteType: "message",
