@@ -127,7 +127,6 @@ async function init() {
           }
           break;
         case "user":
-          console.log("Set user", wsMessage.user)
           user.user = wsMessage.user;
           sendToAll({
             type: "users",
