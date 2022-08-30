@@ -1,0 +1,3 @@
+#+title:minima-server
+
+Server for Minima, a chatting application. See also the [[https://github.com/qucchia/minima-web][web client]].
